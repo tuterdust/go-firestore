@@ -1,0 +1,10 @@
+# Environment files
+*.envrc
+**/env.list
+
+# Git files
+*.git
+*.gitignore
+
+# Air
+tmp
