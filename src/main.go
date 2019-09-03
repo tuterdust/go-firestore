@@ -9,10 +9,9 @@ import (
 )
 
 var (
-	logger *log.Logger
+	logger      *log.Logger
+	rootDirPath string
 )
-
-var rootDirPath = os.Getenv("GOPATH") + os.Getenv("PROJECT_PATH")
 
 func setupRouter() *gin.Engine {
 
@@ -30,6 +29,7 @@ func main() {
 }
 
 func setLogFiles() {
+	setPath()
 	if _, err := os.Stat(rootDirPath + "/log"); os.IsNotExist(err) {
 		os.Mkdir(rootDirPath+"/log", os.ModePerm)
 	}
@@ -51,4 +51,15 @@ func setErrorLog() {
 
 	logger = log.New(f, "API  ", log.LstdFlags)
 	logger.Println("Error log starts")
+}
+
+func setPath() {
+	rootDirPath = getEnv("GOPATH", "$HOME/go") + getEnv("PROJECT_PATH", "/src/github.com/tuterdust/go-firestore")
+}
+
+func getEnv(key, defaultValue string) string {
+	if value, found := os.LookupEnv(key); found {
+		return value
+	}
+	return defaultValue
 }
